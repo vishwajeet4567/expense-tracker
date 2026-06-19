@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # expense-tracker
 # Smart Expense Tracker
 
@@ -92,10 +93,34 @@ String password = "YOUR_MYSQL_PASSWORD";
 ```
 
 ### 4. Compile and run
+=======
+# Smart Expense Tracker (Refactored — DAO Layer)
+
+## What changed from the original
+1. **DAO layer added** — `ExpenseDAO.java` is now the only class that talks to JDBC/SQL.
+2. **PreparedStatement everywhere** — every value (amount, date, category, note) is bound
+   via `?` placeholders instead of being concatenated into the SQL string. This removes
+   the SQL injection risk noted in the original README's "Known Issues".
+3. **Model class** — `AccountSummary.java` is a small POJO representing one row of the
+   ACCOUNT table, so the GUI deals with objects instead of raw `ResultSet` columns.
+4. **Bug fix** — the original code created the account as `'vishwajeet'` but later ran
+   `UPDATE ... WHERE NAME='Kshiti'`, so debit/credit updates were silently no-ops. Now a
+   single `ACCOUNT_NAME` constant is used everywhere.
+
+## Structure
+```
+MoneyManager.java   -> GUI / presentation layer (Swing). No SQL here.
+ExpenseDAO.java      -> Data access layer. All SQL lives here, using PreparedStatement.
+AccountSummary.java  -> Simple model class for one ACCOUNT row.
+```
+
+## How to compile & run
+>>>>>>> 03187f7 (Initial commit - expense tracker)
 ```bash
 javac -cp ".:mysql-connector-j-9.5.0.jar" *.java
 java -cp ".:mysql-connector-j-9.5.0.jar" MoneyManager
 ```
+<<<<<<< HEAD
 (On Windows, replace `:` with `;` in the classpath.)
 
 ## Usage
@@ -118,3 +143,13 @@ mysql-connector-j-9.5.0.jar → JDBC driver
 - Filter transactions by date range or category
 - Multi-user support with authentication
 - Unit tests for `ExpenseDAO`
+=======
+
+Make sure MySQL is running and the `expensemanagerjava` database exists:
+```sql
+CREATE DATABASE IF NOT EXISTS expensemanagerjava;
+```
+
+Update the username/password in `MoneyManager.java` (`createAndShowGUI` method) to match
+your local MySQL credentials before running.
+>>>>>>> 03187f7 (Initial commit - expense tracker)
